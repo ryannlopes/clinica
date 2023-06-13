@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Cadastro de Especialidade</title>
+        <title>Register - SB Admin</title>
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
@@ -18,24 +18,40 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-7">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Cadastro Especialidade</h3></div>
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Criar Conta</h3></div>
                                     <div class="card-body">
-                                        <form>
+                                        <form method="post" action="../../backand/insertUser.php">
                                             <div class="row mb-3">
                                                 <div class="col-md-12">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" />
-                                                        <label for="inputFirstName">Descrição</label>
+                                                        <input class="form-control" id="inputFirstName" type="text" name="nome" placeholder="Enter your first name" />
+                                                        <label for="inputFirstName">Nome</label>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="mt-2 mb-0">
-                                                <div class="d-grid"><a class="btn btn-primary btn-block" href="login.html">Cadastrar</a></div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <div class="form-floating">
+                                                        <input class="form-control" id="inputLastName" type="text" name="usuario" placeholder="Enter your last name" />
+                                                        <label for="inputLastName">Usuário</label>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="mt-2 mb-0">
-                                                <div class="d-grid"><a class="btn btn-warning btn-block" href="login.html">Voltar</a></div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <div class="form-floating mb-3 mb-md-0">
+                                                        <input class="form-control" id="inputPassword" type="password" name="senha" placeholder="Create a password" />
+                                                        <label for="inputPassword">Senha</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4 mb-0">
+                                                <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">Criar Conta</button></div>
                                             </div>
                                         </form>
+                                    </div>
+                                    <div class="card-footer text-center py-3">
+                                        <div class="small"><a href="login.html">Já tem uma conta?</a></div>
                                     </div>
                                 </div>
                             </div>

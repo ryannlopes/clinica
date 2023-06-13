@@ -1,3 +1,33 @@
+<?php
+session_start();
+
+// Verificar se o formulário de login foi enviado
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    require("../backand/conexao.php");
+
+    // Obter os valores do formulário de login
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    // Consulta SQL para verificar as credenciais do usuário
+    $sql = "SELECT * FROM usuario WHERE username = '$username' AND password = '$password'";
+    $result = $conn->query($sql);
+
+    // Verificar se o usuário foi encontrado no banco de dados
+    if ($result->num_rows == 1) {
+        // Login bem-sucedido
+        $_SESSION["username"] = $username;
+        $_SESSION["nomeUser"] = $nome;
+        header("Location: ../front/index.php"); // Redirecionar para a página de dashboard ou página protegida
+    } else {
+        // Login inválido
+        $error = "Nome de usuário ou senha inválidos";
+    }
+
+    // Fechar a conexão com o banco de dados
+    $conn->close();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -20,22 +50,22 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
                                     <div class="card-body">
-                                        <form>
+                                        <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputEmail" type="email" placeholder="thais.carla" />
+                                                <input class="form-control" id="inputEmail" type="text" name="username" placeholder="Usuário" />
                                                 <label for="inputEmail">Usuário</label>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputPassword" type="password" placeholder="Password" />
+                                                <input class="form-control" id="inputPassword" type="password" placeholder="Senha" name="password"/>
                                                 <label for="inputPassword">Senha</label>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="btn btn-primary" href="index.html">Login</a>
+                                                <button type="submit" value="Login" class="btn btn-primary pull-right">Login</button>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
-                                        <div class="small"><a href="cadastrarUser.html">Criar Conta</a></div>
+                                        <div class="small"><a href="./form/cadUser.php">Criar Conta</a></div>
                                     </div>
                                 </div>
                             </div>

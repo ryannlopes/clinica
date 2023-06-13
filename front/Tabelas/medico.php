@@ -1,3 +1,26 @@
+<?php
+session_start();
+
+// Verificar se o usuário está logado
+if (!isset($_SESSION["username"])) {
+    header("Location: ../login.php"); // Redirecionar para a página de login se não estiver logado
+    exit();
+}
+
+require("../../backand/conexao.php");
+
+// Exibir o nome de usuário na página de dashboard
+$username = $_SESSION["username"];
+$nome     = $_SESSION["nomeUser"];
+// Consulta SQL para verificar as credenciais do usuário
+     $query = "SELECT * FROM usuario WHERE username = '$username'";
+              $busca = mysqli_query($conn, $query);
+
+              while ($dados = mysqli_fetch_array($busca)) {
+                $id = $dados['idUser'];
+                $nome = $dados['nomeUser'];
+              
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -16,53 +39,20 @@
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.html">Clinica Saude Plena</a>
             <!-- Sidebar Toggle-->
-            <a class="navbar-brand ps-3" href="index.html">Camila</a>
+            <a class="navbar-brand ps-3" href="index.html"><?php echo $nome; }?></a>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Sair</a></li>
+                    <li><a class="dropdown-item" href="../logout.php">Sair</a></li>
                     </ul>
                 </li>
             </ul>
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            <a class="nav-link" href="../index.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Dashboard
-                            </a>
-                            <a class="nav-link" href="paciente.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Paciente
-                            </a>
-                            <a class="nav-link" href="medico.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Médico
-                            </a>
-                            <a class="nav-link" href="especialidade.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Especialidade
-                            </a>
-                            <a class="nav-link" href="medicoespecialidade.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Relátório Médico Especialidade
-                            </a>
-                            <a class="nav-link" href="consulta.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Consulta
-                            </a>
-                        </div>
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Usuário Logado: </div>
-                        Camila Oliveira
-                    </div>
-                </nav>
+            <?php require('nav.php');?>
             </div>
             <div id="layoutSidenav_content">
                 <main>
@@ -86,32 +76,30 @@
                                         <th scope="col">CRM</th>
                                         <th scope="col">IDADE</th>
                                         <th scope="col">EMAIL</th>
-                                        <th scope="col"></th>
+                                        <th scope="col"><a href="../form/cadMedico.php" type="button" class="btn btn-success">CADASTRAR</a></th>
                                         <th scope="col"></th>
                                       </tr>
                                     </thead>
                                     <tbody>
                                       <tr>
-                                        <th scope="row">1</th>
-                                        <td>Dr Paulo Muzy</td>
-                                        <td>CRM/SP 123456</td>
-                                        <td>51</td>
-                                        <td>teste@teste.com</td>
+                                      <?php
+                                        require('../../backand/conexao.php');
+
+                                        $query = "SELECT * FROM Medico";
+                                        $busca = mysqli_query($conn, $query);
+
+                                        while ($dados = mysqli_fetch_array($busca)) {
+                                        $id = $dados['idMedico'];
+                                      ?>
+                                        <td><?php echo $dados['idMedico'] ?></td>
+                                        <td>Dr <?php echo $dados['nomeMedico'] ?></td>
+                                        <td><?php echo $dados['crmMedico'] ?></td>
+                                        <td><?php echo $dados['idadeMedico'] ?></td>
+                                        <td><?php echo $dados['email'] ?></td>
+                                        <td><a type="button" class="btn btn-warning" href="../form/editMedico.php?idMedico=<?php echo $dados['idMedico']?>">EDITAR</a></td>
+                                        <td><a class="btn btn-danger" href="../../backand/delMedico.php?idMedico=<?php echo $dados['idMedico']?>">DELETAR</a></td>
                                       </tr>
-                                      <tr>
-                                        <th scope="row">2</th>
-                                        <td>Dr Ray</td>
-                                        <td>CRM/SP 123456</td>
-                                        <td>50</td>
-                                        <td>teste@teste.com</td>
-                                      </tr>
-                                      <tr>
-                                        <th scope="row">3</th>
-                                        <td>Dr Ryan</td>
-                                        <td>CRM/SP 123456</td>
-                                        <td>31</td>
-                                        <td>teste@teste.com</td>
-                                      </tr>
+                                    <?PHP } ?>
                                     </tbody>
                                   </table>
                             </div>

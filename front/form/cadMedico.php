@@ -1,3 +1,26 @@
+<?php
+session_start();
+
+// Verificar se o usuário está logado
+if (!isset($_SESSION["username"])) {
+    header("Location: ../login.php"); // Redirecionar para a página de login se não estiver logado
+    exit();
+}
+
+require("../../backand/conexao.php");
+// Exibir o nome de usuário na página de dashboard
+$username = $_SESSION["username"];
+$nome     = $_SESSION["nomeUser"];
+// Consulta SQL para verificar as credenciais do usuário
+     $query = "SELECT * FROM usuario WHERE username = '$username'";
+              $busca = mysqli_query($conn, $query);
+
+              while ($dados = mysqli_fetch_array($busca)) {
+                $id = $dados['idUser'];
+                $nome = $dados['nomeUser'];
+              }
+              
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -20,11 +43,11 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">Cadastro Médico</h3></div>
                                     <div class="card-body">
-                                        <form>
+                                        <form method="post" action="../../backand/insertMedico.php">
                                             <div class="row mb-3">
                                                 <div class="col-md-12">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" />
+                                                        <input class="form-control" id="inputFirstName" type="text" name="nome" />
                                                         <label for="inputFirstName">Nome</label>
                                                     </div>
                                                 </div>
@@ -32,7 +55,7 @@
                                             <div class="row mb-3">
                                                 <div class="col-md-12">
                                                     <div class="form-floating">
-                                                        <input class="form-control" id="inputLastName" type="text" placeholder="Enter your last name" />
+                                                        <input class="form-control" id="inputLastName" type="text" name="crm" />
                                                         <label for="inputLastName">CRM</label>
                                                     </div>
                                                 </div>
@@ -40,7 +63,7 @@
                                             <div class="row mb-3">
                                                 <div class="col-md-12">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="inputPassword" type="text" placeholder="Create a password" />
+                                                        <input class="form-control" id="inputPassword" type="text" name="idade" />
                                                         <label for="inputPassword">Idade</label>
                                                     </div>
                                                 </div>
@@ -48,16 +71,16 @@
                                             <div class="row mb-3">
                                                 <div class="col-md-12">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="inputPassword" type="text" placeholder="Create a password" />
+                                                        <input class="form-control" id="inputPassword" type="text" name="email" />
                                                         <label for="inputPassword">Email</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="mt-2 mb-0">
-                                                <div class="d-grid"><a class="btn btn-primary btn-block" href="login.html">Cadastrar</a></div>
+                                                <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">Cadastrar</button></div>
                                             </div>
                                             <div class="mt-2 mb-0">
-                                                <div class="d-grid"><a class="btn btn-warning btn-block" href="login.html">Voltar</a></div>
+                                                <div class="d-grid"><a class="btn btn-warning btn-block" href="../Tabelas/medico.php">Voltar</a></div>
                                             </div>
                                         </form>
                                     </div>
